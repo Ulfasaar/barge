@@ -1,6 +1,6 @@
-FROM ubuntu:latests
+FROM ubuntu:latest
 
-RUN apt-get update -qq && apt-get install -qy \ 
+RUN apt-get update -qq && apt-get install -qy \
     ca-certificates \
     bzip2 \
     curl \
