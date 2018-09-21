@@ -1,0 +1,63 @@
+version: '2.1'
+
+# Run: docker-compose --project-name=ocean up
+
+services:
+  sut:
+    build: ./tests/
+    depends_on:
+      - mongodb
+      - keeper-contracts
+      - provider
+      - pleuston
+    networks:
+      - backend
+
+  mongodb:
+    image: mongo:3.6
+    ports:
+    - "27017:27017"
+    command: mongod
+    networks:
+    - backend
+
+  keeper-contracts:
+    image: oceanprotocol/keeper-contracts:${OCEAN_VERSION:-stable}
+    ports:
+    - 8545:8545
+    networks:
+    - backend
+    volumes:
+    - artifacts:/keeper-contracts/artifacts/
+
+  provider:
+    image: oceanprotocol/provider:${OCEAN_VERSION:-stable}
+    ports:
+    - 5000:5000
+    networks:
+    - backend
+    depends_on:
+    - keeper-contracts
+    environment:
+      KEEPER_HOST: http://keeper-contracts
+      DB_HOSTNAME: mongodb
+    volumes:
+    - artifacts:/usr/local/contracts/:ro
+
+  pleuston:
+    image: oceanprotocol/pleuston:${OCEAN_VERSION:-stable}
+    ports:
+    - 3000:3000
+    depends_on:
+    - keeper-contracts
+    environment:
+      KEEPER_HOST: keeper-contracts
+      OCEAN_HOST: provider
+    volumes:
+    - artifacts:/pleuston/node_modules/@oceanprotocol/keeper-contracts/artifacts/:ro
+
+networks:
+  backend:
+
+volumes:
+  artifacts:
