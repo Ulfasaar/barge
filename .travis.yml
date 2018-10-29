@@ -1,0 +1,18 @@
+---
+language: C
+
+sudo: false
+
+env:
+  - HELM_VERSION=2.10.0
+
+before_install:
+  - wget https://kubernetes-helm.storage.googleapis.com/helm-v${HELM_VERSION}-linux-amd64.tar.gz
+  - tar xzvf helm-v${HELM_VERSION}-linux-amd64.tar.gz
+  - mv linux-amd64/helm helm
+  - chmod u+x helm
+  - curl -o aws-iam-authenticator https://amazon-eks.s3-us-west-2.amazonaws.com/1.10.3/2018-07-26/bin/linux/amd64/aws-iam-authenticator
+  - curl -o aws-iam-authenticator.sha256 https://amazon-eks.s3-us-west-2.amazonaws.com/1.10.3/2018-07-26/bin/linux/amd64/aws-iam-authenticator.sha256
+  - openssl sha -sha256 aws-iam-authenticator
+  - chmod +x ./aws-iam-authenticator
+  - mkdir ~/.kube && mv .kubeconfig ~/.kube/config
