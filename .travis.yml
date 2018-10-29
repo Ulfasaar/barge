@@ -16,6 +16,7 @@ before_install:
   - openssl sha -sha256 aws-iam-authenticator
   - chmod +x ./aws-iam-authenticator
   - mkdir ~/.kube && mv .kubeconfig ~/.kube/config
+  - export PATH=$PWD:$PATH
 
 script:
-  - ./helm list
+  - helm list
