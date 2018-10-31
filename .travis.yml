@@ -25,7 +25,7 @@ script:
   - |
     helm install oceanprotocol/helm-ocean\
       --name travis_${TRAVIS_JOB_NUMBER}\
-      --set image.keepercontracts.tag=${KEEPERCONTRACTS_TAG:latest}\
-      --set image.provider.tag=${PROVIDER_TAG:latest}\
-      --set image.pleuston.tag=${PLEUSTON_TAG:latest}
+      --set image.keepercontracts.tag=${KEEPERCONTRACTS_TAG:-latest}\
+      --set image.provider.tag=${PROVIDER_TAG:-latest}\
+      --set image.pleuston.tag=${PLEUSTON_TAG:-latest}
   - helm list
