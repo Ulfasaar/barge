@@ -17,12 +17,13 @@ before_install:
   - chmod +x ./aws-iam-authenticator
   - mkdir ~/.kube && mv .kubeconfig ~/.kube/config
   - export PATH=$PWD:$PATH
+  - helm init --client-only
   - helm repo add oceanprotocol https://oceanprotocol.github.io/ocean-helm-repository
   - helm repo update
 
 script:
   - |
-    helm install oceanprocol/helm-ocean\
+    helm install oceanprotocol/helm-ocean\
       --name travis_${TRAVIS_JOB_NUMBER}\
       --set image.keepercontracts.tag=${KEEPERCONTRACTS_TAG:latest}\
       --set image.provider.tag=${PROVIDER_TAG:latest}\
