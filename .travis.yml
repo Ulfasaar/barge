@@ -27,5 +27,8 @@ script:
       --name travis-${TRAVIS_JOB_ID}\
       --set image.keepercontracts.tag=${KEEPERCONTRACTS_TAG:-latest}\
       --set image.provider.tag=${PROVIDER_TAG:-latest}\
-      --set image.pleuston.tag=${PLEUSTON_TAG:-latest}
+      --set image.pleuston.tag=${PLEUSTON_TAG:-latest}\
+      --set service.keepercontracts.type=${PLEUSTON_LB_TYPE:-ClusterIP}\
+      --set service.provider.type=${PLEUSTON_LB_TYPE:-ClusterIP}\
+      --set service.pleuston.type=${PLEUSTON_LB_TYPE:-ClusterIP}\
   - helm list
