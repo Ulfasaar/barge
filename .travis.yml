@@ -42,13 +42,14 @@ script:
       --set service.pleuston.type=${PLEUSTON_LB_TYPE:-ClusterIP}\
   - helm list
   - sleep 90
-  - keeper_contract_pod=$(kubectl get pod -l release=travis-${TRAVIS_JOB_ID} -l app=helm-ocean-keeper-contracts -o jsonpath="{.items[0].metadata.name}")
-  - provider_pod=$(kubectl get pod -l release=travis-${TRAVIS_JOB_ID} -l app=helm-ocean-provider -o jsonpath="{.items[0].metadata.name}")
-  - pleuston_pod=$(kubectl get pod -l release=travis-${TRAVIS_JOB_ID} -l app=helm-ocean-pleuston -o jsonpath="{.items[0].metadata.name}")
+  - keeper_contract_pod=$(kubectl get pod -l release=travis-${TRAVIS_JOB_ID},app=helm-ocean-keeper-contracts -o jsonpath="{.items[0].metadata.name}")
+  - provider_pod=$(kubectl get pod -l release=travis-${TRAVIS_JOB_ID},app=helm-ocean-provider -o jsonpath="{.items[0].metadata.name}")
+  - pleuston_pod=$(kubectl get pod -l release=travis-${TRAVIS_JOB_ID},app=helm-ocean-pleuston -o jsonpath="{.items[0].metadata.name}")
   - echo $keeper_contract_pod
   - echo $provider_pod
   - echo $pleuston_pod
   - kubectl port-forward $keeper_contract_pod 8545:8545 &
   - kubectl port-forward $provider_pod 5000:5000 &
   - kubectl port-forward $pleuston_pod 3000:3000 &
-  - curl http://localhost:3000
+  - sleep 180
+  - curl http://localhost:3000/
