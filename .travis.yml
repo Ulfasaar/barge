@@ -1,20 +1,29 @@
 ---
 language: C
 
-sudo: false
+sudo: true
 
 env:
   - HELM_VERSION=2.10.0
 
 before_install:
+  # Install kubectl
+  - sudo apt-get update && sudo apt-get install -y apt-transport-https
+  - curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+  - echo "deb http://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee -a /etc/apt/sources.list.d/kubernetes.list
+  - sudo apt-get update
+  - sudo apt-get install -y kubectl
+  # Install Helm
   - wget https://kubernetes-helm.storage.googleapis.com/helm-v${HELM_VERSION}-linux-amd64.tar.gz
   - tar xzvf helm-v${HELM_VERSION}-linux-amd64.tar.gz
   - mv linux-amd64/helm helm
   - chmod u+x helm
+  # Install aws-iam-authenticator
   - curl -o aws-iam-authenticator https://amazon-eks.s3-us-west-2.amazonaws.com/1.10.3/2018-07-26/bin/linux/amd64/aws-iam-authenticator
   - curl -o aws-iam-authenticator.sha256 https://amazon-eks.s3-us-west-2.amazonaws.com/1.10.3/2018-07-26/bin/linux/amd64/aws-iam-authenticator.sha256
   - openssl sha -sha256 aws-iam-authenticator
   - chmod +x ./aws-iam-authenticator
+  # Configuration
   - mkdir ~/.kube && mv .kubeconfig ~/.kube/config
   - export PATH=$PWD:$PATH
   - helm init --client-only
@@ -32,3 +41,10 @@ script:
       --set service.provider.type=${PLEUSTON_LB_TYPE:-ClusterIP}\
       --set service.pleuston.type=${PLEUSTON_LB_TYPE:-ClusterIP}\
   - helm list
+  - sleep 90
+  - keeper_contract_pod=$(kubectl get pod -l release=travis-${TRAVIS_JOB_ID} -l app=helm-ocean-keeper-contracts -o jsonpath="{.items[0].metadata.name}")
+  - provider_pod=$(kubectl get pod -l release=travis-${TRAVIS_JOB_ID} -l app=helm-ocean-provider -o jsonpath="{.items[0].metadata.name}")
+  - pleuston_pod=$(kubectl get pod -l release=travis-${TRAVIS_JOB_ID} -l app=helm-ocean-pleuston -o jsonpath="{.items[0].metadata.name}")
+  - echo $keeper_contract_pod
+  - echo $provider_pod
+  - echo $pleuston_pod
