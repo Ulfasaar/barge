@@ -48,3 +48,7 @@ script:
   - echo $keeper_contract_pod
   - echo $provider_pod
   - echo $pleuston_pod
+  - kubectl port-forward $keeper_contract_pod 8545:8545 &
+  - kubectl port-forward $provider_pod 5000:5000 &
+  - kubectl port-forward $pleuston_pod 3000:3000 &
+  - curl http://localhost:3000
