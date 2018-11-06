@@ -56,5 +56,5 @@ script:
   - kubectl port-forward $provider_pod 5000:5000 &
   - kubectl port-forward $pleuston_pod 3000:3000 &
   - sleep 10
-  - newman run tests/aquarius.json --global-var aquarius_url=http://localhost:5000
+  - newman run tests/provider.json --global-var provider_url=http://localhost:5000
 
