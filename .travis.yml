@@ -1,5 +1,5 @@
 ---
-language: C
+language: nodejs
 
 sudo: true
 
@@ -29,6 +29,7 @@ before_install:
   - helm init --client-only
   - helm repo add oceanprotocol https://oceanprotocol.github.io/ocean-helm-repository
   - helm repo update
+  - npm install -g newman
 
 script:
   - |
@@ -51,5 +52,6 @@ script:
   - kubectl port-forward $keeper_contract_pod 8545:8545 &
   - kubectl port-forward $provider_pod 5000:5000 &
   - kubectl port-forward $pleuston_pod 3000:3000 &
-  - sleep 180
-  - curl http://localhost:3000/
+  - sleep 10
+  - newman tests/aquarius.json --global-var aquarius_url=http://localhost:5000
+

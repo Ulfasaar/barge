@@ -1,0 +1,498 @@
+{
+	"info": {
+		"_postman_id": "817029f6-24b7-4d97-89a7-2f5311f92389",
+		"name": "Aquarius",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get all assets ids",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ae6aed5a-ce57-4387-859b-de6cc6260889",
+						"type": "text/javascript",
+						"exec": [
+							"var response = JSON.parse(responseBody);",
+							"",
+							"tests[\"GET message - Status code is 200\"] = responseCode.code === 200;",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{aquarius_url}}/api/v1/aquarius/assets",
+					"host": [
+						"{{aquarius_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"aquarius",
+						"assets"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get ddo of all assets.",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b3868d31-91a0-43ea-93ad-92e4cf45756a",
+						"type": "text/javascript",
+						"exec": [
+							"var response = JSON.parse(responseBody);",
+							"",
+							"tests[\"GET message - Status code is 200\"] = responseCode.code === 200;",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{aquarius_url}}/api/v1/aquarius/assets/ddo",
+					"host": [
+						"{{aquarius_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"aquarius",
+						"assets",
+						"ddo"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Asset ddo",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "fb770b3b-69ea-48a0-85b7-48cdf6f28a92",
+						"type": "text/javascript",
+						"exec": [
+							"var response = JSON.parse(responseBody);",
+							"",
+							"tests[\"GET message - Status code is 201\"] = responseCode.code === 201;",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"@context\": \"https://w3id.org/future-method/v1\",\n  \"authentication\": [\n    {\n      \"type\": \"RsaSignatureAuthentication2018\"\n    },\n    {\n      \"publicKey\": \"did:op:123456789abcdefghi#keys-1\"\n    }\n  ],\n  \"id\": \"did:op:123456789abcdefghi\",\n  \"publicKey\": [\n    {\n      \"id\": \"did:op:123456789abcdefghi#keys-1\"\n    },\n    {\n      \"type\": \"Ed25519VerificationKey2018\"\n    },\n    {\n      \"owner\": \"did:op:123456789abcdefghi\"\n    },\n    {\n      \"publicKeyBase58\": \"H3C2AVvLMv6gmMNam3uVAjZpfkcJCwDwnZn6z3wXmqPV\"\n    }\n  ],\n  \"service\": [\n    {\n      \"serviceEndpoint\": \"http://mybrizo.org/api/v1/brizo/services/consume?pubKey=${pubKey}&serviceId={serviceId}&url={url}\",\n      \"type\": \"Consume\"\n    },\n    {\n      \"serviceEndpoint\": \"http://mybrizo.org/api/v1/brizo/services/compute?pubKey=${pubKey}&serviceId={serviceId}&algo={algo}&container={container}\",\n      \"type\": \"Compute\"\n    },\n    {\n      \"metadata\": {\n        \"additionalInformation\": {\n          \"structuredMarkup\": [\n            {\n              \"mediaType\": \"application/ld+json\",\n              \"uri\": \"http://skos.um.es/unescothes/C01194/jsonld\"\n            },\n            {\n              \"mediaType\": \"text/turtle\",\n              \"uri\": \"http://skos.um.es/unescothes/C01194/turtle\"\n            }\n          ],\n          \"updateFrecuency\": \"yearly\"\n        },\n        \"base\": {\n          \"author\": \"Met Office\",\n          \"compression\": \"zip\",\n          \"contentType\": \"text/csv\",\n          \"contentUrls\": [\n            \"https://testocnfiles.blob.core.windows.net/testfiles/testzkp.zip\"\n          ],\n          \"copyrightHolder\": \"Met Office\",\n          \"dateCreated\": \"2012-10-10T17:00:000Z\",\n          \"description\": \"Weather information of UK including temperature and humidity\",\n          \"encoding\": \"UTF-8\",\n          \"inLanguage\": \"en\",\n          \"license\": \"CC-BY\",\n          \"links\": [\n            {\n              \"sample1\": \"http://data.ceda.ac.uk/badc/ukcp09/data/gridded-land-obs/gridded-land-obs-daily/\"\n            },\n            {\n              \"sample2\": \"http://data.ceda.ac.uk/badc/ukcp09/data/gridded-land-obs/gridded-land-obs-averages-25km/\"\n            },\n            {\n              \"fieldsDescription\": \"http://data.ceda.ac.uk/badc/ukcp09/\"\n            }\n          ],\n          \"name\": \"UK Weather information 2011\",\n          \"price\": 10,\n          \"size\": \"3.1gb\",\n          \"tags\": \"weather, uk, 2011, temperature, humidity\",\n          \"type\": \"dataset\",\n          \"workExample\": \"423432fsd,51.509865,-0.118092,2011-01-01T10:55:11+00:00,7.2,68\"\n        },\n        \"curation\": {\n          \"numVotes\": 123,\n          \"rating\": 0.93,\n          \"schema\": \"Binary Votting\"\n        }\n      },\n      \"serviceEndpoint\": \"http://myaquarius.org/api/v1/provider/assets/metadata/{did}\",\n      \"type\": \"Metadata\"\n    }\n  ]\n}"
+				},
+				"url": {
+					"raw": "{{aquarius_url}}/api/v1/aquarius/assets/ddo",
+					"host": [
+						"{{aquarius_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"aquarius",
+						"assets",
+						"ddo"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all assets ids Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b03a193b-6f2a-44d1-9f17-2a6da2b2d43d",
+						"type": "text/javascript",
+						"exec": [
+							"var response = JSON.parse(responseBody);",
+							"",
+							"tests[\"GET message - Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"",
+							"pm.test(\"Asset created exists\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.ids).includes(\"did:op:123456789abcdefghi\");",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{aquarius_url}}/api/v1/aquarius/assets",
+					"host": [
+						"{{aquarius_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"aquarius",
+						"assets"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get ddo of all assets. Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a64573e6-f86f-46de-87ca-f32bae305e34",
+						"type": "text/javascript",
+						"exec": [
+							"var response = JSON.parse(responseBody);",
+							"",
+							"tests[\"GET message - Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"pm.test(\"Body contains our assset\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"did:op:123456789abcdefghi\");",
+							"});",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{aquarius_url}}/api/v1/aquarius/assets/ddo",
+					"host": [
+						"{{aquarius_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"aquarius",
+						"assets",
+						"ddo"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get a list of ddo that match with the text.",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "4f3abf22-e2ed-4e82-a7ab-2ba6d148c74d",
+						"type": "text/javascript",
+						"exec": [
+							"var response = JSON.parse(responseBody);",
+							"",
+							"tests[\"GET message - Status code is 200\"] = responseCode.code === 200;",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "{{aquarius_url}}/api/v1/aquarius/assets/ddo/query?text=did:op:123456789abcdefghi",
+					"host": [
+						"{{aquarius_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"aquarius",
+						"assets",
+						"ddo",
+						"query"
+					],
+					"query": [
+						{
+							"key": "text",
+							"value": "did:op:123456789abcdefghi",
+							"description": "ID of the asset"
+						},
+						{
+							"key": "sort",
+							"value": "",
+							"description": "Key or list of keys to sort the result",
+							"disabled": true
+						},
+						{
+							"key": "offset",
+							"value": "",
+							"description": "Number of records per page",
+							"disabled": true
+						},
+						{
+							"key": "page",
+							"value": null,
+							"description": "Page showed",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get a list of ddo that match with the query executed",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "1191b39c-72cf-4d4e-8415-9ec58e0854b1",
+						"type": "text/javascript",
+						"exec": [
+							"var response = JSON.parse(responseBody);",
+							"",
+							"tests[\"GET message - Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"pm.test(\"Body contains our assset\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"did:op:123456789abcdefghi\");",
+							"});",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"offset\": 0,\n  \"page\": 0,\n  \"query\": {\n    \"id\": \"did:op:123456789abcdefghi\"\n  },\n  \"sort\": {\n    \"value\": 1\n  }\n}"
+				},
+				"url": {
+					"raw": "{{aquarius_url}}/api/v1/aquarius/assets/ddo/query",
+					"host": [
+						"{{aquarius_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"aquarius",
+						"assets",
+						"ddo",
+						"query"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update ddo of an existing asset",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f8daef66-a753-4aca-ac3c-93de0adfdca5",
+						"type": "text/javascript",
+						"exec": [
+							"var response = JSON.parse(responseBody);",
+							"",
+							"tests[\"GET message - Status code is 200\"] = responseCode.code === 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"@context\": \"https://w3id.org/future-method/v1\",\n  \"authentication\": [\n    {\n      \"type\": \"RsaSignatureAuthentication2018\"\n    },\n    {\n      \"publicKey\": \"did:op:123456789abcdefghi#keys-1\"\n    }\n  ],\n  \"id\": \"did:op:123456789abcdefghi\",\n  \"publicKey\": [\n    {\n      \"id\": \"did:op:123456789abcdefghi#keys-1\"\n    },\n    {\n      \"type\": \"Ed25519VerificationKey2018\"\n    },\n    {\n      \"owner\": \"did:op:123456789abcdefghi\"\n    },\n    {\n      \"publicKeyBase58\": \"H3C2AVvLMv6gmMNam3uVAjZpfkcJCwDwnZn6z3wXmqPV\"\n    }\n  ],\n  \"service\": [\n    {\n      \"serviceEndpoint\": \"http://mybrizo.org/api/v1/brizo/services/consume?pubKey=${pubKey}&serviceId={serviceId}&url={url}\",\n      \"type\": \"Consume\"\n    },\n    {\n      \"serviceEndpoint\": \"http://mybrizo.org/api/v1/brizo/services/compute?pubKey=${pubKey}&serviceId={serviceId}&algo={algo}&container={container}\",\n      \"type\": \"Compute\"\n    },\n    {\n      \"metadata\": {\n        \"additionalInformation\": {\n          \"structuredMarkup\": [\n            {\n              \"mediaType\": \"application/ld+json\",\n              \"uri\": \"http://skos.um.es/unescothes/C01194/jsonld\"\n            },\n            {\n              \"mediaType\": \"text/turtle\",\n              \"uri\": \"http://skos.um.es/unescothes/C01194/turtle\"\n            }\n          ],\n          \"updateFrecuency\": \"yearly\"\n        },\n        \"base\": {\n          \"author\": \"Met Office\",\n          \"compression\": \"zip\",\n          \"contentType\": \"text/csv\",\n          \"contentUrls\": [\n            \"https://testocnfiles.blob.core.windows.net/testfiles/testzkp.zip\"\n          ],\n          \"copyrightHolder\": \"Met Office\",\n          \"dateCreated\": \"2012-10-10T17:00:000Z\",\n          \"description\": \"Weather information of UK including temperature and humidity\",\n          \"encoding\": \"UTF-8\",\n          \"inLanguage\": \"en\",\n          \"license\": \"CC-BY\",\n          \"links\": [\n            {\n              \"sample1\": \"http://data.ceda.ac.uk/badc/ukcp09/data/gridded-land-obs/gridded-land-obs-daily/\"\n            },\n            {\n              \"sample2\": \"http://data.ceda.ac.uk/badc/ukcp09/data/gridded-land-obs/gridded-land-obs-averages-25km/\"\n            },\n            {\n              \"fieldsDescription\": \"http://data.ceda.ac.uk/badc/ukcp09/\"\n            }\n          ],\n          \"name\": \"UK Weather information 2011\",\n          \"price\": 10,\n          \"size\": \"3.1gb\",\n          \"tags\": \"weather, uk, 2011, temperature, humidity\",\n          \"type\": \"dataset\",\n          \"workExample\": \"423432fsd,51.509865,-0.118092,2011-01-01T10:55:11+00:00,7.2,68\"\n        },\n        \"curation\": {\n          \"numVotes\": 123,\n          \"rating\": 0.93,\n          \"schema\": \"Binary Votting\"\n        }\n      },\n      \"serviceEndpoint\": \"http://myaquarius.org/api/v1/provider/assets/metadata/{did}\",\n      \"type\": \"Metadata\"\n    }\n  ]\n}"
+				},
+				"url": {
+					"raw": "{{aquarius_url}}/api/v1/aquarius/assets/ddo/did:op:123456789abcdefghi",
+					"host": [
+						"{{aquarius_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"aquarius",
+						"assets",
+						"ddo",
+						"did:op:123456789abcdefghi"
+					]
+				},
+				"description": "Update ddo of an existing asset"
+			},
+			"response": []
+		},
+		{
+			"name": "Get ddo of an asset",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "55d439db-a0c5-4a69-b9a9-d38887a0efce",
+						"type": "text/javascript",
+						"exec": [
+							"var response = JSON.parse(responseBody);",
+							"",
+							"tests[\"GET message - Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"pm.test(\"Asset created exists\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData._id).to.eql(\"did:op:123456789abcdefghi\");",
+							"});",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{aquarius_url}}/api/v1/aquarius/assets/ddo/did:op:123456789abcdefghi",
+					"host": [
+						"{{aquarius_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"aquarius",
+						"assets",
+						"ddo",
+						"did:op:123456789abcdefghi"
+					]
+				},
+				"description": "Get ddo of a particular asset."
+			},
+			"response": []
+		},
+		{
+			"name": "Delete asset",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "3f3708ee-6df7-4032-84b5-8605662e9919",
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"GET message - Status code is 200\"] = responseCode.code === 200;",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{aquarius_url}}/api/v1/aquarius/assets/ddo/did:op:123456789abcdefghi",
+					"host": [
+						"{{aquarius_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"aquarius",
+						"assets",
+						"ddo",
+						"did:op:123456789abcdefghi"
+					]
+				},
+				"description": "Retire metadata of an asset"
+			},
+			"response": []
+		},
+		{
+			"name": "Get ddo of all assets. Copy Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "284a55a9-aef7-465c-9555-88bd02346a39",
+						"type": "text/javascript",
+						"exec": [
+							"var response = JSON.parse(responseBody);",
+							"",
+							"tests[\"GET message - Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"pm.test(\"Asset created exists\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.ids).not.includes(\"did:op:123456789abcdefghi\");",
+							"});",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{aquarius_url}}/api/v1/aquarius/assets",
+					"host": [
+						"{{aquarius_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"aquarius",
+						"assets"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
