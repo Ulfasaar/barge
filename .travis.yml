@@ -39,22 +39,27 @@ script:
     helm install oceanprotocol/helm-ocean\
       --name travis-${TRAVIS_JOB_ID}\
       --set image.keepercontracts.tag=${KEEPERCONTRACTS_TAG:-latest}\
-      --set image.provider.tag=${PROVIDER_TAG:-latest}\
+      --set image.aquarius.tag=${AQUARIUSIDER_TAG:-latest}\
+      --set image.brizo.tag=${BRIZO_TAG:-latest}\
       --set image.pleuston.tag=${PLEUSTON_TAG:-latest}\
-      --set service.keepercontracts.type=${PLEUSTON_LB_TYPE:-ClusterIP}\
-      --set service.provider.type=${PLEUSTON_LB_TYPE:-ClusterIP}\
-      --set service.pleuston.type=${PLEUSTON_LB_TYPE:-ClusterIP}\
+      --set service.keepercontracts.type=${KEEPERCONTRACTS_LB_TYPE:-ClusterIP}\
+      --set service.aquarius.type=${AQUARIUS_LB_TYPE:-ClusterIP}\
+      --set service.brizo.type=${BRIZO_LB_TYPE:-ClusterIP}\
+      --set service.pleuston.type=${PLEUSTON_LB_TYPE:-ClusterIP}
   - helm list
   - sleep 90
   - keeper_contract_pod=$(kubectl get pod -l release=travis-${TRAVIS_JOB_ID},app=helm-ocean-keeper-contracts -o jsonpath="{.items[0].metadata.name}")
-  - provider_pod=$(kubectl get pod -l release=travis-${TRAVIS_JOB_ID},app=helm-ocean-provider -o jsonpath="{.items[0].metadata.name}")
+  - aquarius_pod=$(kubectl get pod -l release=travis-${TRAVIS_JOB_ID},app=helm-ocean-aquarius -o jsonpath="{.items[0].metadata.name}")
+  - brizo_pod=$(kubectl get pod -l release=travis-${TRAVIS_JOB_ID},app=helm-ocean-brizo -o jsonpath="{.items[0].metadata.name}")
   - pleuston_pod=$(kubectl get pod -l release=travis-${TRAVIS_JOB_ID},app=helm-ocean-pleuston -o jsonpath="{.items[0].metadata.name}")
   - echo $keeper_contract_pod
-  - echo $provider_pod
+  - echo $aquarius_pod
+  - echo $brizo_pod
   - echo $pleuston_pod
   - kubectl port-forward $keeper_contract_pod 8545:8545 &
-  - kubectl port-forward $provider_pod 5000:5000 &
+  - kubectl port-forward $aquarius_pod 5000:5000 &
+  - kubectl port-forward $brizo_pod 8030:8030 &
   - kubectl port-forward $pleuston_pod 3000:3000 &
   - sleep 10
-  - newman run tests/provider.json --global-var provider_url=http://localhost:5000
+  - newman run tests/aquarius.json --global-var aquarius_url=http://localhost:5000
 
