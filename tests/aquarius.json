@@ -379,18 +379,20 @@
 					"listen": "test",
 					"script": {
 						"id": "55d439db-a0c5-4a69-b9a9-d38887a0efce",
-						"type": "text/javascript",
 						"exec": [
 							"var response = JSON.parse(responseBody);",
+							"// tests[\"[INFO] Request: \" + JSON.stringify(request)] = true;",
+							"// tests[\"[INFO] Response: \" + responseBody] = true;",
 							"",
 							"tests[\"GET message - Status code is 200\"] = responseCode.code === 200;",
 							"",
 							"pm.test(\"Asset created exists\", function () {",
 							"    var jsonData = pm.response.json();",
-							"    pm.expect(jsonData._id).to.eql(\"did:op:123456789abcdefghi\");",
+							"    pm.expect(jsonData.id).to.eql(\"did:op:123456789abcdefghi\");",
 							"});",
 							""
-						]
+						],
+						"type": "text/javascript"
 					}
 				}
 			],
@@ -454,19 +456,19 @@
 			"response": []
 		},
 		{
-			"name": "Get ddo of all assets. Copy Copy",
+			"name": "Get ddo of all assets",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
-						"id": "284a55a9-aef7-465c-9555-88bd02346a39",
+						"id": "7c188cad-4731-4930-a1b5-21ffa3d80122",
 						"type": "text/javascript",
 						"exec": [
 							"var response = JSON.parse(responseBody);",
 							"",
 							"tests[\"GET message - Status code is 200\"] = responseCode.code === 200;",
 							"",
-							"pm.test(\"Asset created exists\", function () {",
+							"pm.test(\"Asset created does not exist\", function () {",
 							"    var jsonData = pm.response.json();",
 							"    pm.expect(jsonData.ids).not.includes(\"did:op:123456789abcdefghi\");",
 							"});",
