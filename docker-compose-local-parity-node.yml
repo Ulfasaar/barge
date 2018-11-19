@@ -9,35 +9,60 @@ services:
     - "27017:27017"
     command: mongod
     networks:
-    - backend
+      backend:
+        ipv4_address: 172.15.0.11
 
   parity-node:
-    image: parity/parity:stable
+    image: oceanprotocol/parity-ethereum:beta
+    entrypoint: /opt/parity/parity
     command:
-      --config /parity/config/validator.toml
+      --config /home/parity/parity/config/secretstoreclient.toml
+      --db-path /home/parity/chains
+      --keys-path /home/parity/.local/share/io.parity.ethereum/keys
+      --base-path /home/parity/base
       --engine-signer 0x00bd138abd70e2f00903268f3db08f2d25677c9e
-      --jsonrpc-interface 0.0.0.0
-      --ws-interface 0.0.0.0
-      --ui-interface 0.0.0.0
-      --unsafe-expose
+      --ws-interface all
       --jsonrpc-cors all
+      --jsonrpc-interface all
+      --jsonrpc-hosts all
+      --jsonrpc-apis all
+      --unsafe-expose
       --unlock 0x00bd138abd70e2f00903268f3db08f2d25677c9e
     volumes:
-      - ./parity/parity/config:/parity/config:ro
-      - parity-node:/root/.local/share/io.parity.ethereum/
-      - ./parity/parity/authorities/validator0.json:/root/.local/share/io.parity.ethereum/keys/ocean-network/validator.json:ro
-      - ./parity/parity/keys:/root/.local/share/io.parity.ethereum/keys/ocean-network
-      - ./parity/parity/authorities/validator0.pwd:/parity/validator.pwd:ro
-      - ./parity/parity/node0.network.key:/root/.local/share/io.parity.ethereum/network/key:ro
+      - ./parity/parity/config:/home/parity/parity/config
+      - parity-node:/home/parity/.local/share/io.parity.ethereum/
+      - ./parity/parity/authorities/validator0.json:/home/parity/.local/share/io.parity.ethereum/keys/ocean-network/validator.json
+      - ./parity/parity/keys:/home/parity/.local/share/io.parity.ethereum/keys/ocean-network
+      - ./parity/parity/authorities/validator0.pwd:/home/parity/parity/validator.pwd
+      - ./parity/parity/node0.network.key:/home/parity/.local/share/io.parity.ethereum/network/key
     ports:
       - 8545:8545
     networks:
-    - backend
+      backend:
+        ipv4_address: 172.15.0.12
+
+  secret-store:
+    image: oceanprotocol/parity-ethereum:master
+    # entrypoint: tail -f /dev/null
+    entrypoint: /opt/parity/parity
+    command:
+      --config /etc/parity/secretstore/config.toml --jsonrpc-cors all --jsonrpc-interface all --jsonrpc-hosts all --jsonrpc-apis all
+    volumes:
+    - ./parity/secret_store/config/:/etc/parity/secretstore/
+    - secret-store:/parity_data/
+    - ./parity/secret_store/keys/:/parity_data/keys/ocean-network/
+    ports:
+    - 12000:12000
+    - 12001:12001
+    networks:
+      backend:
+        ipv4_address: 172.15.0.13
 
   keeper-contracts:
     image: oceanprotocol/keeper-contracts:${OCEAN_VERSION:-stable}
     networks:
-    - backend
+      backend:
+        ipv4_address: 172.15.0.14
     environment:
       LOCAL_CONTRACTS: "true"
       DEPLOY_CONTRACTS: ${DEPLOY_CONTRACTS}
@@ -54,7 +79,8 @@ services:
     ports:
     - 5000:5000
     networks:
-    - backend
+      backend:
+        ipv4_address: 172.15.0.15
     depends_on:
     - keeper-contracts
     environment:
@@ -67,6 +93,13 @@ services:
 
 networks:
   backend:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+      - subnet: 172.15.0.1/24
+        gateway: 172.15.0.1
 
 volumes:
   parity-node:
+  secret-store:
