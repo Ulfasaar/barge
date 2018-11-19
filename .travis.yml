@@ -35,8 +35,10 @@ before_install:
   - npm install -g newman
 
 script:
+  - kubectl config set-context $(kubectl config current-context) --namespace=travis
   - |
     helm install oceanprotocol/helm-ocean\
+      --namespace=travis\
       --name travis-${TRAVIS_JOB_ID}\
       --set image.keepercontracts.tag=${KEEPERCONTRACTS_TAG:-latest}\
       --set image.aquarius.tag=${AQUARIUSIDER_TAG:-latest}\
